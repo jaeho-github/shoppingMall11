@@ -27,9 +27,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-	
-	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style></style>
    	
    	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -40,28 +37,44 @@
 			$("a[href='#' ]:contains('회원가입')").on("click" , function() {
 				self.location = "/user/addUser"
 			});
-		});
-		
-		//============= 로그인 화면이동 =============
-		$( function() {
-			//==> 추가된부분 : "addUser"  Event 연결
+			
 			$("a[href='#' ]:contains('로 그 인')").on("click" , function() {
 				self.location = "/user/login"
 			});
+			
+			$(".dropdown-menu a").on("click" , function() {
+				if ($(this).text().trim() == '상 품 검 색')
+				{
+					self.location = "#";
+				}else
+				{
+					alert("로그인 후 사용가능한 기능입니다.");
+					self.location = "/user/login"	
+				}
+				
+			});
+			
 		});
 		
-	</script>	
+		
+	</script>
+	
+	<style>
+        body {
+            padding-top : 70px;
+        }
+   	</style>
 	
 </head>
 
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<div class="navbar  navbar-default">
-		
-        <div class="container">
-        
-        	<a class="navbar-brand" href="#">Model2 MVC Shop</a>
+	<div class="navbar  navbar-inverse navbar-fixed-top">
+	
+		<div class="container">
+		       
+			<a class="navbar-brand" href="#">Model2 MVC Shop</a>
 			
 			<!-- toolBar Button Start //////////////////////// -->
 			<div class="navbar-header">
@@ -74,15 +87,74 @@
 			</div>
 			<!-- toolBar Button End //////////////////////// -->
 			
-			<div class="collapse navbar-collapse"  id="target">
-	             <ul class="nav navbar-nav navbar-right">
-	                 <li><a href="#">회원가입</a></li>
-	                 <li><a href="#">로 그 인</a></li>
-	           	</ul>
-	       </div>
-   		
-   		</div>
-   	</div>
+		    <!--  dropdown hover Start -->
+			<div 	class="collapse navbar-collapse" id="target" 
+		       			data-hover="dropdown" data-animations="fadeInDownNew fadeInRightNew fadeInUpNew fadeInLeftNew">
+		         
+		         	<!-- Tool Bar 를 다양하게 사용하면.... -->
+		             <ul class="nav navbar-nav">
+		             
+		              <!--  회원관리 DrowDown -->
+		              <li class="dropdown">
+		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		                         <span >회원관리</span>
+		                         <span class="caret"></span>
+		                     </a>
+		                     <ul class="dropdown-menu">
+		                         <li><a href="#">개인정보조회</a></li>
+		                         
+	
+		                         <li><a href="#">회원정보조회</a></li>
+	
+		                         
+		                         <li class="divider"></li>
+		                         <li><a href="#">etc...</a></li>
+		                     </ul>
+		                 </li>
+		                 
+		              <!-- 판매상품관리 DrowDown  -->
+		               <c:if test="${sessionScope.user.role == 'admin'}">
+			              <li class="dropdown">
+			                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+			                         <span >판매상품관리</span>
+			                         <span class="caret"></span>
+			                     </a>
+			                     <ul class="dropdown-menu">
+			                         <li><a href="#">판매상품등록</a></li>
+			                         <li><a href="#">판매상품관리</a></li>
+			                         <li class="divider"></li>
+			                         <li><a href="#">etc..</a></li>
+			                     </ul>
+			                </li>
+		                 </c:if>
+		                 
+		              <!-- 구매관리 DrowDown -->
+		              <li class="dropdown">
+		                     <a  href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		                         <span >상품구매</span>
+		                         <span class="caret"></span>
+		                     </a>
+		                     <ul class="dropdown-menu">
+		                         <li><a href="#">상 품 검 색</a></li>
+		                         
+	
+		                         <li><a href="#">구매이력조회</a></li>
+	
+		                         
+		                         <li><a href="#">최근본상품</a></li>
+		                         <li class="divider"></li>
+		                         <li><a href="#">etc..</a></li>
+		                     </ul>
+		                 </li>
+		                 
+		                 <li><a href="#">etc...</a></li>
+		             </ul>
+		             
+			</div>
+			<!-- dropdown hover END -->	       
+		    
+		</div>
+	</div>
    	<!-- ToolBar End /////////////////////////////////////-->
    	
 	<!--  화면구성 div Start /////////////////////////////////////-->
@@ -90,62 +162,9 @@
 		
 		<!-- 다단레이아웃  Start /////////////////////////////////////-->
 		<div class="row">
-	
-			<!--  Menu 구성 Start /////////////////////////////////////-->     	
-			<div class="col-md-3">
-		        
-		       	<!--  회원관리 목록에 제목 -->
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<i class="glyphicon glyphicon-heart"></i> 회원관리
-         			</div>
-         			<!--  회원관리 아이템 -->
-					<ul class="list-group">
-						 <li class="list-group-item">
-						 	<a href="#">개인정보조회</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						 </li>
-						 <li class="list-group-item">
-						 	<a href="#">회원정보조회</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						 </li>
-					</ul>
-		        </div>
-               
-               
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-							<i class="glyphicon glyphicon-briefcase"></i> 판매상품관리
-         			</div>
-					<ul class="list-group">
-						 <li class="list-group-item">
-						 	<a href="#">판매상품등록</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						 </li>
-						 <li class="list-group-item">
-						 	<a href="#">판매상품관리</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						 </li>
-					</ul>
-		        </div>
-               
-               
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-							<i class="glyphicon glyphicon-shopping-cart"></i> 상품구매
-	    			</div>
-					<ul class="list-group">
-						 <li class="list-group-item"><a href="#">상품검색</a></li>
-						  <li class="list-group-item">
-						  	<a href="#">구매이력조회</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						  </li>
-						 <li class="list-group-item">
-						 	<a href="#">최근본상품</a> <i class="glyphicon glyphicon-ban-circle"></i>
-						 </li>
-					</ul>
-				</div>
-				
-			</div>
-			<!--  Menu 구성 end /////////////////////////////////////-->   
 
 	 	 	<!--  Main start /////////////////////////////////////-->   		
-	 	 	<div class="col-md-9">
+	 	 	<div class="col-md-12">
 				<div class="jumbotron">
 			  		<h1>Model2 MVC Shop</h1>
 			  		<p>로그인 후 사용가능...</p>
