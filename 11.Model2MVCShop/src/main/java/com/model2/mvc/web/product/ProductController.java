@@ -1,6 +1,9 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +20,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
-import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
-import com.model2.mvc.service.user.UserService;
 
 
 //==> 상품관리 Controller
@@ -64,12 +66,53 @@ public class ProductController {
 	
 //	@RequestMapping("/addProduct.do")
 	@RequestMapping(value = "addProduct", method=RequestMethod.POST)
-	public String addProduct( @ModelAttribute("product") Product product ) throws Exception {
-
+	public String addProduct( @ModelAttribute("product") Product product, 
+			@RequestParam("imageFile") List<MultipartFile> imageFile,
+			HttpServletRequest request) throws Exception {
+		
 		System.out.println("/product/addProduct : POST");
+		System.out.println("product============"+product);
+		
+		int size = imageFile.size();
+		String uploadFileName = null;
+		String webPath = "images/uploadFiles/";
+		String uploadPath = request.getSession().getServletContext().getRealPath(webPath);
+		
+		System.out.println("uploadPath==="+uploadPath);
+		
+		for(int i = 0; i<size; i++) {
+			String uuidFileName = null;
+			String uuid = UUID.randomUUID().toString();
+			
+			MultipartFile file = imageFile.get(i);
+			String fileName = file.getOriginalFilename();
+			
+			System.out.println("for문돌아나온fileName=="+fileName);
+			
+			uuidFileName = uuid+ "_" +fileName;
+			
+			File saveFile = new File(uploadPath, uuidFileName);
+			
+			try {
+				file.transferTo(saveFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if(i==0) {
+				uploadFileName = uuidFileName;
+			} else {
+				uploadFileName = uploadFileName +"-"+uuidFileName;
+			}
+			
+		}
+		
+		System.out.println("uploadFileName=="+uploadFileName);
 		
 		//Business Logic
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
+		product.setFileName(uploadFileName);
+		
 		productService.addProduct(product);
 		
 		return "forward:/product/addProduct.jsp";

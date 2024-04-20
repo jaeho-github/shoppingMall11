@@ -5,10 +5,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
    	<script type="text/javascript">
+   	
+   	function history(){
+		popWin = window.open("/history.jsp",
+													"popWin",
+													"left=300, top=200, width=300, height=200, marginwidth=0, marginheight=0, scrollbars=no, scrolling=no, menubar=no, resizable=no");
+	}
 	
 		//============= logout Event  처리 =============
 		//문서가 완전히 로드된 후에 실행되기 위해 요 안에다 넣어줌
-		 $(function() {
+		$(function() {
+			
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 		 	$("a:contains('로그아웃')").on("click" , function() {
 				$(self.location).attr("href","/user/logout");
@@ -16,15 +23,32 @@
 			}); 
 			
 		 	$("a:contains('회원정보조회')").on("click" , function() {
-				//$(self.location).attr("href","/user/logout");
 				self.location = "/user/listUser"
 			}); 
 		 	
 		 	$( "a:contains('개인정보조회')" ).on("click" , function() {
 		 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 				$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
+				// self.location = "/user/getUser?userId=${sessionScope.user.userId}");
 			});
+		 	
+		 	$("a:contains('상 품 검 색')").on("click" , function() {
+				self.location = "/product/listProduct/search"
+			}); 
+		 	
+		 	$("a:contains('판매상품관리')").on("click" , function() {
+				self.location = "/product/listProduct/manage"
+			});
+		 	
+		 	$("a:contains('판매상품등록')").on("click" , function() {
+				self.location = "/product/addProductView.jsp"
+			});
+		 	
+		 	$("a:contains('최근본상품')").on("click" , function() {
+				history();
+			}); 
 		 });
+		 
 		
 	</script>  
 

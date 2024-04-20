@@ -93,11 +93,19 @@ public class UserController {
 		//Business Logic
 		userService.updateUser(user);
 		
+		System.out.println("이전session확인"+session.getAttribute("user"));
+		
 		String sessionId=((User)session.getAttribute("user")).getUserId();
 		if(sessionId.equals(user.getUserId())){
 			session.setAttribute("user", user);
 		}
 		
+		System.out.println("이후session확인"+session.getAttribute("user"));
+		
+		// redirect에서 forward로 바꾸면 안되는 이유:
+		// 클라이언트에게 새로운 요청을 보내도록 지시하며,
+		// 클라이언트는 새로운 url로 get 요청을 보내기 때문.
+		// getUser는 post만 받기로 되어있으므로 에러날 수 있음.
 		return "redirect:/user/getUser?userId="+user.getUserId();
 	}
 	
@@ -164,7 +172,7 @@ public class UserController {
 		Map<String , Object> map=userService.getUserList(search);
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
-		System.out.println(resultPage);
+		System.out.println("resultPage ===!"+resultPage);
 		
 		// Model 과 View 연결
 		model.addAttribute("list", map.get("list"));
